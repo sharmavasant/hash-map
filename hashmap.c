@@ -6,7 +6,7 @@ HashMap* create_hashmap(int capacity)
 {
     HashMap* map = malloc(sizeof(HashMap));
     map->size = capacity;
-    map->buckets = calloc(capacity*sizeof(Node*));
+    map->buckets = calloc(capacity, sizeof(Node*));
     return map;
 }
 
