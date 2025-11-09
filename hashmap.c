@@ -67,3 +67,40 @@ int get(HashMap* map, const char* key, int* found)
     return 0;
 }
 
+void remove_key(HashMap* map, const char* key) 
+{
+    unsigned long int idx = hash(key)%map->size;
+    Node* head = map->buckets[idx];
+    Node* temp = head;
+    Node* prev = NULL;
+    while(temp) 
+    {
+        if(strcmp(temp->key, key) == 0) 
+        {
+            if(prev) prev->next = temp->next;
+            else map->buckets[idx] = temp->next;
+            free(temp->key);
+            free(temp);
+            return;
+        }
+        prev = temp;
+        temp = temp->next;
+    }
+}
+
+void free_hashmap(HashMap* map) 
+{
+    for(int i=0;i<map->size;i++) 
+    {
+        Node* node = map->buckets[i];
+        while(node) 
+        {
+            Node* temp = node;
+            node = node->next;
+            free(temp->key);
+            free(temp);
+        }
+    }
+    free(map->buckets);
+    free(map);
+}
