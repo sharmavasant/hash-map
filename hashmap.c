@@ -32,7 +32,7 @@ unsigned long int hash(const char* str)
 
 void put(HashMap* map, const char* key, int value) 
 {
-    unsigned long int idx = hash(key)/map->size;
+    unsigned long int idx = hash(key)%map->size;
     Node* head = map->buckets[idx];
     Node* temp = head;
     while(temp) 
@@ -47,5 +47,23 @@ void put(HashMap* map, const char* key, int value)
     Node* newNode = create_node(key, value);
     newNode->next = head;
     map->buckets[idx] = newNode;
+}
+
+int get(HashMap* map, const char* key, int* found) 
+{
+    unsigned long int idx = hash(key)%map->size;
+    Node* head = map->buckets[idx];
+    Node* temp = head;
+    while(temp) 
+    {
+        if(strcmp(temp->key, key) == 0) 
+        {
+            *found = 1;
+            return temp->value;
+        }
+        temp = temp->next;
+    }
+    *found = 0;
+    return 0;
 }
 
